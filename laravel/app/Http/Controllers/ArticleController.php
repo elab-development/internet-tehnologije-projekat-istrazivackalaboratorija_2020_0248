@@ -77,15 +77,17 @@ class ArticleController extends Controller
     }
 
 
-    public function fetchScienceEvents()
+    public function fetchScienceEvents(Request $request)  //potrebno je kroz request poslati parametar page za paginaciju  http://127.0.0.1:8000/api/fetchScienceEvents?page=2
     {
-        $apiKey = 'rQaLInSZHng8AiA3h8qSt41RdHFKBmd3';  
+        $apiKey = 'rQaLInSZHng8AiA3h8qSt41RdHFKBmd3';
+        $page = $request->input('page', 0);  
         $response = Http::get("https://app.ticketmaster.com/discovery/v2/events.json", [
             'apikey' => $apiKey,
             'keyword' => 'science',
-            'size' => 10
+            'size' => 10,
+            'page' => $page
         ]);
-
+    
         if ($response->successful()) {
             $events = $response->json();
             return response()->json($events);
@@ -93,5 +95,6 @@ class ArticleController extends Controller
             return response()->json(['message' => 'Nije moguće dobiti podatke'], $response->status());
         }
     }
+    
     
 }
