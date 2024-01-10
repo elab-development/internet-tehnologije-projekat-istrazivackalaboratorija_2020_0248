@@ -21,7 +21,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
-
+Route::get('/fetchScienceEvents', [ArticleController::class, 'fetchScienceEvents']);
 Route::resource('articles', ArticleController::class);
 
 Route::prefix('comments')->group(function () {

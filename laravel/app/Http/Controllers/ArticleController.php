@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -74,4 +75,23 @@ class ArticleController extends Controller
         $article->delete();
         return response()->json(['message' => 'Article deleted']);
     }
+
+
+    public function fetchScienceEvents()
+    {
+        $apiKey = 'rQaLInSZHng8AiA3h8qSt41RdHFKBmd3';  
+        $response = Http::get("https://app.ticketmaster.com/discovery/v2/events.json", [
+            'apikey' => $apiKey,
+            'keyword' => 'science',
+            'size' => 10
+        ]);
+
+        if ($response->successful()) {
+            $events = $response->json();
+            return response()->json($events);
+        } else {
+            return response()->json(['message' => 'Nije moguće dobiti podatke'], $response->status());
+        }
+    }
+    
 }
