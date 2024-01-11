@@ -1,38 +1,91 @@
-.App {
+ 
+.homepage {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2F2F2F; 
+  background-color: #D6FFF6;  
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+ 
+h1 {
+  color: #4DCCBD; 
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+}
+
+h1 svg {
+  vertical-align: middle;
+  margin-right: 0.3em;
+}
+ 
+p {
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+ 
+.icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.icons div {
+  padding: 10px;
+  border-radius: 4px;
+  background: #FFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.icons div:hover {
+  transform: translateY(-5px);
+}
+
+.icons svg {
+  color: #2374AB; 
+  margin-bottom: 8px;
+  font-size: 30px;
+}
+ 
+.science-importance, .fun-facts {
+  background: #FFF;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 20px 0;
+}
+
+.fun-facts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.fun-facts li {
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  font-style: italic;
+}
+
+.fun-facts li::before {
+  content: '»';
+  position: absolute;
+  left: 0;
+  color: #FF8484; 
+  font-size: 20px;
+}
+ 
+@media (max-width: 768px) {
+  .icons {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+  h1 {
+    font-size: 2em;
   }
 }
