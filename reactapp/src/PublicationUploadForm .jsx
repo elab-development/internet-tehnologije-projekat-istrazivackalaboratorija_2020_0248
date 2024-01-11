@@ -20,40 +20,38 @@ const PublicationUploadForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-  
+
     if (publication.file) {
       const reader = new FileReader();
-  
+
       reader.onload = function (event) {
         try {
           const base64File = event.target.result;
-          localStorage.setItem('uploadedFile', base64File);
-  
-          // Save other form data as a JSON object
-          const formData = {
+          const existingFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+          const newFile = {
             title: publication.title,
             authors: publication.authors,
             abstract: publication.abstract,
-            keywords: publication.keywords
+            keywords: publication.keywords,
+            file: base64File
           };
-          localStorage.setItem('publicationData', JSON.stringify(formData));
-  
+          existingFiles.push(newFile);
+          localStorage.setItem('uploadedFiles', JSON.stringify(existingFiles));
+
           alert('Publication uploaded successfully!');
         } catch (error) {
           console.error('Error saving the file:', error);
           alert('Failed to upload the publication.');
         }
       };
-  
+
       reader.onerror = function (error) {
         console.error('Error reading the file:', error);
       };
-  
+
       reader.readAsDataURL(publication.file);
     }
-  
-    // Reset form after submission
+
     setPublication({
       title: '',
       authors: '',
@@ -62,7 +60,8 @@ const PublicationUploadForm = () => {
       file: null
     });
   };
-  
+   
+    
 
   return (
     <form onSubmit={handleSubmit}>
