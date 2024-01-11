@@ -96,5 +96,33 @@ class ArticleController extends Controller
         }
     }
     
+    public function search(Request $request)
+    {
+        $query = Article::query();
+    
+        if ($request->has('title')) {
+            $query->where('title', 'like', '%' . $request->input('title') . '%');
+        }
+        if ($request->has('content')) {
+            $query->where('content', 'like', '%' . $request->input('content') . '%');
+        }
+        if ($request->has('user_id')) {
+            $query->where('user_id', $request->input('user_id'));
+        }
+        if ($request->has('published_from') && $request->has('published_to')) {
+            $query->whereBetween('published_at', [$request->input('published_from'), $request->input('published_to')]);
+        }
+    
+        $articles = $query->paginate(2);
+        return response()->json($articles);
+    }
+    
+
+
+
+
+
+
+
     
 }
