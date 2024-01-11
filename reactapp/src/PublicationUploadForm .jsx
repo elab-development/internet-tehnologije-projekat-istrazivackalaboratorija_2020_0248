@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import InputField from './InputField';
+import TextareaField from './TextareaField';
 
 const PublicationUploadForm = () => {
   const [publication, setPublication] = useState({
@@ -65,48 +67,33 @@ const PublicationUploadForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Title:
-        <input
-          type="text"
-          name="title"
-          value={publication.title}
-          onChange={handleInputChange}
-          required
-        />
-      </label>
+      <InputField
+        label="Title"
+        name="title"
+        value={publication.title}
+        onChange={handleInputChange}
+      />
 
-      <label>
-        Authors:
-        <input
-          type="text"
-          name="authors"
-          value={publication.authors}
-          onChange={handleInputChange}
-          required
-        />
-      </label>
+      <InputField
+        label="Authors"
+        name="authors"
+        value={publication.authors}
+        onChange={handleInputChange}
+      />
 
-      <label>
-        Abstract:
-        <textarea
-          name="abstract"
-          value={publication.abstract}
-          onChange={handleInputChange}
-          required
-        />
-      </label>
+      <TextareaField
+        label="Abstract"
+        name="abstract"
+        value={publication.abstract}
+        onChange={handleInputChange}
+      />
 
-      <label>
-        Keywords:
-        <input
-          type="text"
-          name="keywords"
-          value={publication.keywords}
-          onChange={handleInputChange}
-          required
-        />
-      </label>
+      <InputField
+        label="Keywords"
+        name="keywords"
+        value={publication.keywords}
+        onChange={handleInputChange}
+      />
 
       <label>
         Upload File:
