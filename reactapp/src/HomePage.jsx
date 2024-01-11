@@ -1,7 +1,25 @@
-import React from 'react';
-import { FaMicroscope, FaFlask, FaAtom, FaBrain, FaLaughBeam } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { FaMicroscope, FaFlask, FaAtom, FaBrain, FaLaughBeam, FaRegLaughBeam } from 'react-icons/fa';
+import FunFact from './FunFact';
 
 const HomePage = () => {
+    const [facts, setFacts] = useState([]);
+
+    useEffect(() => {
+      const fetchFacts = async () => {
+        try {
+          const response = await axios.get('https://api.api-ninjas.com/v1/facts?limit=10', {
+            headers: { 'X-Api-Key': '7xiJG3ZG/DVXBFQcpnUANw==DCKsOuWEdluVhptV' }
+          });
+          setFacts(response.data);
+        } catch (error) {
+          console.error('Error fetching facts:', error);
+        }
+      };
+  
+      fetchFacts();
+    }, []);
   return (
     <div className="homepage">
      <h1><FaAtom /> Dobrodošli u našu naučno-istraživačku laboratoriju</h1>
@@ -31,11 +49,11 @@ const HomePage = () => {
         </p>
       </section>
       <section className="fun-facts">
-        <h2>Zanimljive činjenice</h2>
+        <h2><FaRegLaughBeam /> Zanimljive činjenice</h2>
         <ul>
-          <li>Da li ste znali da kava može povećati vašu sposobnost učenja?</li>
-          <li>Znate li da je DNK dovoljno dugačka da se proteže od Zemlje do Sunca i nazad više od 300 puta?</li>
-          <li>Atomske čestice se ponašaju drugačije kada ih neko posmatra. To je kvantna mehanika u akciji!</li>
+          {facts.map((fact, index) => (
+            <FunFact key={index} fact={fact.fact} />
+          ))}
         </ul>
       </section>
      
