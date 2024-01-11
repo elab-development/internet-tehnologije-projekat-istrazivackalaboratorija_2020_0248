@@ -4,22 +4,47 @@ import { FaMicroscope, FaFlask, FaAtom, FaBrain, FaLaughBeam, FaRegLaughBeam } f
 import FunFact from './FunFact';
 
 const HomePage = () => {
-    const [facts, setFacts] = useState([]);
-
-    useEffect(() => {
-      const fetchFacts = async () => {
-        try {
-          const response = await axios.get('https://api.api-ninjas.com/v1/facts?limit=10', {
-            headers: { 'X-Api-Key': '7xiJG3ZG/DVXBFQcpnUANw==DCKsOuWEdluVhptV' }
-          });
-          setFacts(response.data);
-        } catch (error) {
-          console.error('Error fetching facts:', error);
-        }
-      };
+    // const [facts, setFacts] = useState([]);
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const [factsPerPage] = useState(10);
+    // useEffect(() => {
+    //   const fetchFacts = async () => {
+    //     try {
+    //       const response = await axios.get('https://api.api-ninjas.com/v1/facts?limit=50', {
+    //         headers: { 'X-Api-Key': '7xiJG3ZG/DVXBFQcpnUANw==DCKsOuWEdluVhptV' }
+    //       });
+    //       setFacts(response.data);
+    //     } catch (error) {
+    //       console.error('Error fetching facts:', error);
+    //     }
+    //   };
   
-      fetchFacts();
-    }, []);
+    //   fetchFacts();
+    // }, []);
+
+    // const lastFactIndex = currentPage * factsPerPage;
+    // const firstFactIndex = lastFactIndex - factsPerPage;
+    // const currentFacts = facts.slice(firstFactIndex, lastFactIndex);
+  
+    // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  
+    // // Calculate the total number of pages
+    // const pageCount = Math.ceil(facts.length / factsPerPage);
+  
+    // // Render pagination dots
+    // const PaginationDots = () => {
+    //   let dots = [];
+    //   for (let i = 1; i < pageCount; i++) {
+    //     dots.push(
+    //       <span
+    //         key={i}
+    //         className={`dot ${i === currentPage ? 'active' : ''}`}
+    //         onClick={() => paginate(i)}
+    //       />
+    //     );
+    //   }
+    //   return <div className="pagination">{dots}</div>;
+    // };
   return (
     <div className="homepage">
      <h1><FaAtom /> Dobrodošli u našu naučno-istraživačku laboratoriju</h1>
@@ -48,14 +73,15 @@ const HomePage = () => {
           A istraživanje novih koncepta može biti izuzetno zabavno!
         </p>
       </section>
-      <section className="fun-facts">
+      {/* <section className="fun-facts">
         <h2><FaRegLaughBeam /> Zanimljive činjenice</h2>
         <ul>
-          {facts.map((fact, index) => (
+          {currentFacts.map((fact, index) => (
             <FunFact key={index} fact={fact.fact} />
           ))}
         </ul>
-      </section>
+        <PaginationDots />
+      </section> */}
      
     </div>
   );

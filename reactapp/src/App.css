@@ -89,3 +89,23 @@ p {
     font-size: 2em;
   }
 }
+
+
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.dot.active {
+  background-color: #717171;
+}
+
+.pagination {
+  text-align: center;
+  padding: 20px 0;
+}
