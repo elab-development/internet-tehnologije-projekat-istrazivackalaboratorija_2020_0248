@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'bio' => $this->faker->paragraph,
             'last_login_at' => $this->faker->dateTimeThisMonth,
             'email_verified_at' => now(),
-            'remember_token' => Str::random(10),
+       
         ];
     }
 
