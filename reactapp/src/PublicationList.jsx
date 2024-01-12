@@ -21,12 +21,23 @@ const PublicationsList = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleSortToggle = () => {
     setSortAscending(!sortAscending);
   };
-  const filteredPublications = publications.filter(publication => 
-    publication.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+
+  const searchFilter = (publication) => {
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      publication.title.toLowerCase().includes(searchLower) ||
+      publication.authors.toLowerCase().includes(searchLower) ||
+      publication.abstract.toLowerCase().includes(searchLower) ||
+      publication.keywords.toLowerCase().includes(searchLower)
+    );
+  };
+
+  const filteredPublications = publications.filter(searchFilter);
+
   const sortedPublications = [...filteredPublications].sort((a, b) => {
     const titleA = a.title.toLowerCase();
     const titleB = b.title.toLowerCase();
@@ -34,17 +45,16 @@ const PublicationsList = () => {
     if (titleA < titleB) return sortAscending ? -1 : 1;
     if (titleA > titleB) return sortAscending ? 1 : -1;
     return 0;
-  }).filter(publication => 
-    publication.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  });
+
   return (
     <div>
-    <button onClick={handleSortToggle} className="sort-button">
+      <button onClick={handleSortToggle} className="sort-button">
         {sortAscending ? "Sort Descending" : "Sort Ascending"}
       </button>
       <input 
         type="text" 
-        placeholder="Search by title..." 
+        placeholder="Search by title, authors, abstract, keywords..." 
         onChange={handleSearchChange}
         className="search-input"
       />
