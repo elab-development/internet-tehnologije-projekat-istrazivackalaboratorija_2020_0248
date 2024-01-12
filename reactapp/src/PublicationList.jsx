@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PublicationItem from './PublicationItem';  
+import useSearch from './useSearch';
 
 const PublicationsList = () => {
   const [publications, setPublications] = useState([]);
@@ -26,17 +27,10 @@ const PublicationsList = () => {
     setSortAscending(!sortAscending);
   };
 
-  const searchFilter = (publication) => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      publication.title.toLowerCase().includes(searchLower) ||
-      publication.authors.toLowerCase().includes(searchLower) ||
-      publication.abstract.toLowerCase().includes(searchLower) ||
-      publication.keywords.toLowerCase().includes(searchLower)
-    );
-  };
+  
 
-  const filteredPublications = publications.filter(searchFilter);
+  const filteredPublications =useSearch(publications, searchTerm);
+    console.log(filteredPublications);
 
   const sortedPublications = [...filteredPublications].sort((a, b) => {
     const titleA = a.title.toLowerCase();
