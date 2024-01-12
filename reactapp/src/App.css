@@ -246,3 +246,16 @@ nav ul li {
 nav ul li:hover {
   background-color: #3bb2a6; 
 }
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+ 
+.search-input:focus {
+  outline: none;
+  border-color: #4DCCBD;
+}
