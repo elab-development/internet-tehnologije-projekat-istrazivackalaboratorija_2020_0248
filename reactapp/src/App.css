@@ -221,3 +221,28 @@ form button[type='submit']:hover {
     flex-basis: 100%;
   }
 }
+
+
+
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #D6FFF6;  
+}
+
+nav ul li {
+  margin: 10px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  background-color: #4DCCBD;  
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+nav ul li:hover {
+  background-color: #3bb2a6; 
+}
