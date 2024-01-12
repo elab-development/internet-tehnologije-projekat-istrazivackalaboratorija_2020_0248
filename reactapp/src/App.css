@@ -184,7 +184,7 @@ form button[type='submit']:hover {
 }
 
 .publication-item {
-  flex-basis: 30%; /* Adjust the size of each item */
+  flex-basis: 30%;  
   margin-bottom: 20px;
   padding: 15px;
   background-color: #FFF;
@@ -258,4 +258,19 @@ nav ul li:hover {
 .search-input:focus {
   outline: none;
   border-color: #4DCCBD;
+}
+
+.sort-button {
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  background-color: #4DCCBD;  
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sort-button:hover {
+  background-color: #3bb2a6; 
 }
