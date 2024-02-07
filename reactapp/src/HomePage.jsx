@@ -4,7 +4,7 @@ import { FaMicroscope, FaFlask, FaAtom, FaBrain, FaLaughBeam, FaRegLaughBeam } f
 import FunFact from './FunFact';
 
 const HomePage = () => {
-    // const [facts, setFacts] = useState([]);
+    // const [facts, setFacts] = useState([]);   
     // const [currentPage, setCurrentPage] = useState(1);
     // const [factsPerPage] = useState(10);
     // useEffect(() => {
@@ -73,15 +73,15 @@ const HomePage = () => {
           A istraživanje novih koncepta može biti izuzetno zabavno!
         </p>
       </section>
-      {/* <section className="fun-facts">
+      <section className="fun-facts">
         <h2><FaRegLaughBeam /> Zanimljive činjenice</h2>
         <ul>
-          {currentFacts.map((fact, index) => (
+          {/* {currentFacts.map((fact, index) => (
             <FunFact key={index} fact={fact.fact} />
-          ))}
+          ))} */}
         </ul>
-        <PaginationDots />
-      </section> */}
+        {/* <PaginationDots /> */}
+      </section>
      
     </div>
   );

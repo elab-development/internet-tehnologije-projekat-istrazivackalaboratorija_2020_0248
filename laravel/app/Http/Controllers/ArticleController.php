@@ -11,7 +11,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::paginate(2);
+        $articles = Article::paginate(3);   //https:127.0.0.8000/api/articles?page=3
         return response()->json($articles);
     }
 
@@ -113,7 +113,7 @@ class ArticleController extends Controller
             $query->whereBetween('published_at', [$request->input('published_from'), $request->input('published_to')]);
         }
     
-        $articles = $query->paginate(2);
+        $articles = $query->get();
         return response()->json($articles);
     }
     

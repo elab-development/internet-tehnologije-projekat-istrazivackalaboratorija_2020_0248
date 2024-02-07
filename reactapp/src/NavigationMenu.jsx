@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const NavigationMenu = () => {
+const NavigationMenu = ({token,setToken}) => {
   let navigate = useNavigate();
 
   return (

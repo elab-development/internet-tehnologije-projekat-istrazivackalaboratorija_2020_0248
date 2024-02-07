@@ -23,11 +23,11 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::get('/fetchScienceEvents', [ArticleController::class, 'fetchScienceEvents']);
 Route::resource('articles', ArticleController::class);
-
+Route::get('/articles/search', [ArticleController::class,'search']);
 Route::prefix('comments')->group(function () {
     Route::get('/', [CommentController::class, 'index']);
     Route::get('/{id}', [CommentController::class, 'show']);
-    Route::post('/', [CommentController::class, 'store']);
-    Route::put('/{id}', [CommentController::class, 'update']);
-    Route::delete('/{id}', [CommentController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->  post('/', [CommentController::class, 'store']);
+    Route::middleware('auth:sanctum')->  put('/{id}', [CommentController::class, 'update']);
+    Route::middleware('auth:sanctum')->  delete('/{id}', [CommentController::class, 'destroy']);
 });

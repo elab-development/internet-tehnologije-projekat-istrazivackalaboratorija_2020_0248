@@ -25,7 +25,8 @@ class AuthController extends Controller
 
         $user = User::create(array_merge(
                     $validator->validated(),
-                    ['password' => Hash::make($request->password)]
+                    ['password' => Hash::make($request->password)],
+                    ['role_id' => 1]
                 ));
 
         $token = $user->createToken('authToken')->plainTextToken;

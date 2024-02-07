@@ -5,15 +5,20 @@ import PublicationUploadForm from './PublicationUploadForm ';
 import PublicationsList from './PublicationList';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import NavigationMenu from './NavigationMenu';
+import { useState } from 'react';
+import Login from './login/Login';
 function App() {
+  const [token,setToken] =useState(null);
   return (
     <BrowserRouter>
       <div className="App">
-      <NavigationMenu />
+      <NavigationMenu token={token} setToken={setToken} />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/upload" element={<PublicationUploadForm />} />
           <Route path="/publications" element={<PublicationsList />} />
+          <Route path="/login" element={<Login  setToken={setToken}/>} />
+
         </Routes>
       </div>
     </BrowserRouter>
