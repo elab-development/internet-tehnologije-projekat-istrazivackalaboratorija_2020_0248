@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
@@ -21,15 +22,30 @@ class ArticleController extends Controller
         $user = Auth::user();
         $articles = Article::where('user_id', $user->id)->get();   
         return response()->json($articles);
-    }
+    } 
     public function show($id)
     {
         $article = Article::find($id);
         if (!$article) {
             return response()->json(['message' => 'Article not found'], 404);
         }
-        return response()->json($article);
+        
+        // Pretpostavimo da je 'image_path' atribut na modelu Article koji sadrži putanju do fajla
+        $file = $article->image_path;
+        $path = storage_path('app/' . $file);
+    
+        // Proveravamo da li fajl postoji na disku
+        if (!Storage::exists($file)) {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+    
+        // Povratiti originalno ime fajla iz putanje
+        $originalName = basename($file);
+    
+        // Vraćamo fajl
+        return response()->download($path, $originalName);
     }
+    
 
     public function store(Request $request)
     {
