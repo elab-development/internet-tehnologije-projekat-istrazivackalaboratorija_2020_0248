@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,7 +13,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::paginate(3);   //https:127.0.0.8000/api/articles?page=3
+        $articles = Article::all();   
         return response()->json($articles);
     }
 
@@ -28,17 +30,31 @@ class ArticleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'content' => 'required',
-            'user_id' => 'required|exists:users,id',
-            'published_at' => 'nullable|date',
-            'image_path' => 'nullable|string'
+            'content' => 'required', 
+            'abstract' => 'nullable|string', 
+            'keywords' => 'nullable|string', 
+            'file' => 'required|file', 
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
-        $article = Article::create($validator->validated());
+    
+        $user = Auth::user(); // Dohvati trenutno prijavljenog korisnika
+        $data = $validator->validated();
+    
+        // Postavi published_at na trenutni datum i vreme
+        $data['published_at'] = Carbon::now();
+        // Ako je fajl uploadovan, sačuvaj ga u storage i generiši putanju
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $path = $file->store('uploads'); // Čuvamo fajl u storage/uploads
+            $data['image_path'] = $path;
+        }
+    
+        $data['user_id'] = $user->id; // Postavi user_id na ID trenutno prijavljenog korisnika
+    
+        $article = Article::create($data);
         return response()->json($article, 201);
     }
 

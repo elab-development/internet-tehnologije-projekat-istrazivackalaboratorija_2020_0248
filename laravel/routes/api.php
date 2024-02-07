@@ -22,7 +22,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/fetchScienceEvents', [ArticleController::class, 'fetchScienceEvents']);
-Route::resource('articles', ArticleController::class);
+Route::middleware('auth:sanctum')->resource('articles', ArticleController::class);
 Route::get('/articles/search', [ArticleController::class,'search']);
 Route::prefix('comments')->group(function () {
     Route::get('/', [CommentController::class, 'index']);

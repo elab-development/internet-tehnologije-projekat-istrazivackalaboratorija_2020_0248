@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import InputField from './InputField';
 import TextareaField from './TextareaField';
 
@@ -19,39 +20,28 @@ const PublicationUploadForm = () => {
   const handleFileChange = (e) => {
     setPublication({ ...publication, file: e.target.files[0] });
   };
-
-  const handleSubmit = (e) => {
+  const token = sessionStorage.getItem('token');
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(publication);
+    const formData = new FormData();
+    formData.append('title', publication.title); 
+    formData.append('content', publication.abstract);
+    formData.append('keywords', publication.keywords);
+    formData.append('file', publication.file);
 
-    if (publication.file) {
-      const reader = new FileReader();
-
-      reader.onload = function (event) {
-        try {
-          const base64File = event.target.result;
-          const existingFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
-          const newFile = {
-            title: publication.title,
-            authors: publication.authors,
-            abstract: publication.abstract,
-            keywords: publication.keywords,
-            file: base64File
-          };
-          existingFiles.push(newFile);
-          localStorage.setItem('uploadedFiles', JSON.stringify(existingFiles));
-
-          alert('Publication uploaded successfully!');
-        } catch (error) {
-          console.error('Error saving the file:', error);
-          alert('Failed to upload the publication.');
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/articles', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
         }
-      };
-
-      reader.onerror = function (error) {
-        console.error('Error reading the file:', error);
-      };
-
-      reader.readAsDataURL(publication.file);
+      });
+      console.log(response.data);
+      alert('Publication uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading the publication:', error);
+      alert('Failed to upload the publication.');
     }
 
     setPublication({
@@ -62,8 +52,6 @@ const PublicationUploadForm = () => {
       file: null
     });
   };
-   
-    
 
   return (
     <form onSubmit={handleSubmit}>
@@ -72,14 +60,7 @@ const PublicationUploadForm = () => {
         name="title"
         value={publication.title}
         onChange={handleInputChange}
-      />
-
-      <InputField
-        label="Authors"
-        name="authors"
-        value={publication.authors}
-        onChange={handleInputChange}
-      />
+      /> 
 
       <TextareaField
         label="Abstract"
