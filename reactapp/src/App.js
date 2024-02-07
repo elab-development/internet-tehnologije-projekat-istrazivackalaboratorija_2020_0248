@@ -8,6 +8,7 @@ import NavigationMenu from './NavigationMenu';
 import { useState } from 'react';
 import Login from './login/Login';
 import Register from './login/Register';
+import MojiArtikli from './istrazivac/MojiArtikli';
 function App() {
   const [token,setToken] =useState(null);
   return (
@@ -21,7 +22,7 @@ function App() {
 
 
 
-
+          <Route path="/mojiArtikli" element={<MojiArtikli />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login  setToken={setToken}/>} />
 

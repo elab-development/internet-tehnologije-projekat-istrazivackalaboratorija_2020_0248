@@ -28,6 +28,7 @@ const NavigationMenu = ({ token, setToken }) => {
           <>
             <li onClick={() => navigate('/upload')}>Upload Publication</li>
             <li onClick={() => navigate('/publications')}>Publications List</li>
+            <li onClick={() => navigate('/mojiArtikli')}>Moji artikli</li>
             <li onClick={handleLogout}>Logout</li>
           </>
         ) : (

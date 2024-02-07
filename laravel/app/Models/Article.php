@@ -11,7 +11,7 @@ class Article extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'title', 'content', 'user_id', 'published_at', 'image_path','abstract','keywords'
+        'title', 'content', 'user_id', 'published_at', 'image_path','abstract','keywords','citations_count'
     ];
 
     protected $dates = ['published_at'];

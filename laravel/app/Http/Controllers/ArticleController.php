@@ -11,12 +11,17 @@ use Illuminate\Support\Facades\Validator;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index() //vraca sve moguce artikle,, npr za admin page
     {
         $articles = Article::all();   
         return response()->json($articles);
     }
-
+    public function mojiArtikli() //vraca artikle ulogovanog usera, npr za stranicu za CRUD operacije
+    {
+        $user = Auth::user();
+        $articles = Article::where('user_id', $user->id)->get();   
+        return response()->json($articles);
+    }
     public function show($id)
     {
         $article = Article::find($id);
@@ -64,22 +69,24 @@ class ArticleController extends Controller
         if (!$article) {
             return response()->json(['message' => 'Article not found'], 404);
         }
-
+    
         $validator = Validator::make($request->all(), [
             'title' => 'sometimes|required|max:255',
             'content' => 'sometimes|required',
-            'user_id' => 'sometimes|required|exists:users,id',
+            'abstract' => 'nullable|string', 
+            'keywords' => 'nullable|string', 
             'published_at' => 'nullable|date',
             'image_path' => 'nullable|string'
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
+    
         $article->update($validator->validated());
         return response()->json($article);
     }
+    
 
     public function destroy($id)
     {
@@ -133,9 +140,7 @@ class ArticleController extends Controller
         return response()->json($articles);
     }
     
-
-
-
+  
 
 
 
