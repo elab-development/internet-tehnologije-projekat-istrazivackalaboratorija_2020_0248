@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './MojiArtikli.css';
 
 const MojiArtikli = () => {
   const [articles, setArticles] = useState([]);
@@ -29,11 +30,9 @@ const MojiArtikli = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        responseType: 'blob', // Još uvek koristimo blob za binarne podatke
+        responseType: 'blob',
       });
   
-      // Ovde pretpostavljamo da imamo filename sa ekstenzijom
-      // Ako ne, mogli bismo koristiti Content-Type da pretpostavimo ekstenziju
       const contentDisposition = response.headers['content-disposition'];
       let finalFilename = filename;
       if (contentDisposition) {
@@ -57,11 +56,27 @@ const MojiArtikli = () => {
       alert('Failed to download article.');
     }
   };
-  
-  
+
+  const handleDeleteArticle = async (id) => {
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.delete(`http://127.0.0.1:8000/api/articles/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Ukloni izbrisani članak iz stanja kako bi se osvježila tabela
+      setArticles(articles.filter(article => article.id !== id));
+      alert('Article deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting article:', error);
+      alert('Failed to delete article.');
+    }
+  };
 
   return (
-    <div>
+    <div className='moji-artikli'>
       <h2>Moji Artikli</h2>
       <table>
         <thead>
@@ -80,6 +95,7 @@ const MojiArtikli = () => {
               <td>{article.published_at}</td>
               <td>
                 <button onClick={() => handleOpenArticle(article.id)}>Otvori</button>
+                <button onClick={() => handleDeleteArticle(article.id)}>Obrisi</button>
               </td>  
             </tr>
           ))}
