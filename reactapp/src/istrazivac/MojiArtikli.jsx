@@ -3,25 +3,27 @@ import axios from 'axios';
 import './MojiArtikli.css';
 
 const MojiArtikli = () => {
-  const [articles, setArticles] = useState([]);
-
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const token = sessionStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:8000/api/mojiArtikli', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setArticles(response.data);
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
-    };
-
-    fetchArticles();
-  }, []);
+    const [articles, setArticles] = useState([]);
+    const [editingArticle, setEditingArticle] = useState(null);
+    const [editedData, setEditedData] = useState({});
+  
+    useEffect(() => {
+      const fetchArticles = async () => {
+        try {
+          const token = sessionStorage.getItem('token');
+          const response = await axios.get('http://127.0.0.1:8000/api/mojiArtikli', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setArticles(response.data);
+        } catch (error) {
+          console.error('Error fetching articles:', error);
+        }
+      };
+  
+      fetchArticles();
+    }, []);
 
   const handleOpenArticle = async (id, filename) => {
     try {
@@ -66,7 +68,6 @@ const MojiArtikli = () => {
         },
       });
 
-      // Ukloni izbrisani članak iz stanja kako bi se osvježila tabela
       setArticles(articles.filter(article => article.id !== id));
       alert('Article deleted successfully!');
     } catch (error) {
@@ -75,6 +76,40 @@ const MojiArtikli = () => {
     }
   };
 
+  const handleUpdateArticle = (article) => {
+    setEditingArticle(article.id);
+    setEditedData({ ...article });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedData({ ...editedData, [name]: value });
+  };
+
+  const handleSubmitUpdate = async (e) => {
+    e.preventDefault();  
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await axios.put(`http://127.0.0.1:8000/api/articles/${editingArticle}`, editedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setArticles(articles.map((article) => (article.id === editingArticle ? response.data : article)));
+      alert('Article updated successfully!');
+
+      setEditingArticle(null);
+      setEditedData({});
+    } catch (error) {
+      console.error('Error updating article:', error);
+      alert('Failed to update article.');
+    }
+  };
+  const closeModal = () => {
+    setEditingArticle(null);
+    setEditedData({});
+  };
   return (
     <div className='moji-artikli'>
       <h2>Moji Artikli</h2>
@@ -96,11 +131,29 @@ const MojiArtikli = () => {
               <td>
                 <button onClick={() => handleOpenArticle(article.id)}>Otvori</button>
                 <button onClick={() => handleDeleteArticle(article.id)}>Obrisi</button>
+                <button onClick={() => handleUpdateArticle( article)}>Azuriraj</button>
               </td>  
             </tr>
           ))}
         </tbody>
       </table>
+      {editingArticle && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h2>Edit Article</h2>
+            <form onSubmit={handleSubmitUpdate}>
+              <label>Title:</label>
+              <input type="text" name="title" value={editedData.title || ''} onChange={handleInputChange} />
+              <label>Content:</label>
+              <textarea name="content" value={editedData.content || ''} onChange={handleInputChange}></textarea>
+              <label>Published At:</label>
+              <input type="text" name="published_at" value={editedData.published_at || ''} onChange={handleInputChange} />
+              <button type="submit">Update</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
