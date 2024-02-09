@@ -197,6 +197,18 @@ class ArticleController extends Controller
     
 
 
-
+    public function odobri($id)
+    {
+        $article = Article::find($id);
+        if (!$article) {
+            return response()->json(['message' => 'Article not found'], 404);
+        }
+    
+        $article->odobreno = true;
+        $article->save();
+    
+        return response()->json(['message' => 'Article approved successfully', 'article' => $article]);
+    }
+    
     
 }

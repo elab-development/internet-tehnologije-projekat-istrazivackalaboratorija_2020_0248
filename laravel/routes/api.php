@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::put('articles/{id}/approve', [ ArticleController::class, 'odobri']);
+
+
 Route::get('articles/statistics', [ArticleController::class, 'statistics']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);

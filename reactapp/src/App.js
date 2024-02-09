@@ -20,6 +20,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/upload" element={<PublicationUploadForm />} />
           <Route path="/statistike" element={<StatisticsComponent />} />
+          <Route path="/admin/publications" element={<PublicationsList />} />
 
 
 
