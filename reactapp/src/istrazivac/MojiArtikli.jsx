@@ -135,7 +135,8 @@ const MojiArtikli = () => {
             <th>Title</th>
             <th>Content</th>
             <th>Published At</th>
-            <th>Keywords</th>  
+            <th>Keywords</th>
+            <th>Status</th> {/* Dodata kolona za prikaz statusa odobrenja */}
             <th>Actions</th>  
           </tr>
         </thead>
@@ -146,10 +147,11 @@ const MojiArtikli = () => {
               <td>{article.content}</td>
               <td>{article.published_at}</td>
               <td>{article.keywords}</td>
+              <td>{article.odobreno ? 'Odobren' : 'Nije odobren'}</td> {/* Prikazuje status odobrenja */}
               <td>
                 <button onClick={() => handleOpenArticle(article.id)}>Otvori</button>
                 <button onClick={() => handleDeleteArticle(article.id)}>Obrisi</button>
-                <button onClick={() => handleUpdateArticle( article)}>Azuriraj</button>
+                <button onClick={() => handleUpdateArticle(article)}>Azuriraj</button>
               </td>  
             </tr>
           ))}
