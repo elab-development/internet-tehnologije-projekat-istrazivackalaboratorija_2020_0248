@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'password' => bcrypt('password'), 
-            'role_id' => 1,  
+            'role_id' => random_int(1,2),  
             'profile_photo' => 'default.jpg',  
             'bio' => $this->faker->paragraph,
             'last_login_at' => $this->faker->dateTimeThisMonth,

@@ -119,6 +119,7 @@ const MojiArtikli = () => {
             <th>Title</th>
             <th>Content</th>
             <th>Published At</th>
+            <th>Keywords</th>  
             <th>Actions</th>  
           </tr>
         </thead>
@@ -128,6 +129,7 @@ const MojiArtikli = () => {
               <td>{article.title}</td>
               <td>{article.content}</td>
               <td>{article.published_at}</td>
+              <td>{article.keywords}</td>
               <td>
                 <button onClick={() => handleOpenArticle(article.id)}>Otvori</button>
                 <button onClick={() => handleDeleteArticle(article.id)}>Obrisi</button>
@@ -149,6 +151,8 @@ const MojiArtikli = () => {
               <textarea name="content" value={editedData.content || ''} onChange={handleInputChange}></textarea>
               <label>Published At:</label>
               <input type="text" name="published_at" value={editedData.published_at || ''} onChange={handleInputChange} />
+              <label>Keywords:</label>
+              <input type="text" name="keywords" value={editedData.keywords || ''} onChange={handleInputChange} />
               <button type="submit">Update</button>
             </form>
           </div>

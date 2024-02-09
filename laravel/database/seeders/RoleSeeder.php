@@ -16,9 +16,8 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $roles = [
-            ['name' => 'Naučni istraživač', 'description' => 'Istraživač u laboratoriji'],
-            ['name' => 'Laboratorijski tehničar', 'description' => 'Tehničar koji podržava istraživače'],
-            ['name' => 'Asistent', 'description' => 'Pomoćnik u laboratorijskim radovima'],
+            ['name' => 'istrazivac', 'description' => 'Istraživač u laboratoriji'],
+            ['name' => 'admin', 'description' => 'Tehničar koji podržava istraživače'], 
         ];
 
         DB::table('roles')->insert($roles);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -45,8 +46,6 @@ class ArticleController extends Controller
         // Vraćamo fajl
         return response()->download($path, $originalName);
     }
-    
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -55,28 +54,46 @@ class ArticleController extends Controller
             'abstract' => 'nullable|string', 
             'keywords' => 'nullable|string', 
             'file' => 'required|file', 
+            'reference' => 'nullable|array', // Dodajemo validaciju za polje references kao niz
+            'reference.*.title' => 'required|string', // Validacija naslova u svakom objektu u nizu references
+           
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-    
-        $user = Auth::user(); // Dohvati trenutno prijavljenog korisnika
+
+        $user = Auth::user();
         $data = $validator->validated();
-    
-        // Postavi published_at na trenutni datum i vreme
+       
+        // Postavljamo published_at na trenutni datum i vreme
         $data['published_at'] = Carbon::now();
+
+
+        
+ 
         // Ako je fajl uploadovan, sačuvaj ga u storage i generiši putanju
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $path = $file->store('uploads'); // Čuvamo fajl u storage/uploads
+            $path = $file->store('uploads'); 
             $data['image_path'] = $path;
         }
-    
-        $data['user_id'] = $user->id; // Postavi user_id na ID trenutno prijavljenog korisnika
-    
-        $article = Article::create($data);
+
+        $data['user_id'] = $user->id;
+       
+
+                // Čuvamo podatke o referencama iz zahteva
+        if (isset($data['reference'])) {
+            $articleData = Arr::except($data, ['reference']); // Exclude 'reference' from the main article data.
+            $articleData['reference'] = json_encode($data['reference']); // Convert references to JSON string.
+        } else {
+            $articleData = $data;
+        }
+        
+        $article = Article::create($articleData);
+
         return response()->json($article, 201);
+    
     }
 
     public function update(Request $request, $id)
