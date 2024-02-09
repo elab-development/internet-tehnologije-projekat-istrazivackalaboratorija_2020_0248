@@ -10,6 +10,7 @@ const fetchFacts = async () => {
   });
   return data;
 };
+
 const HomePage = () => {
     const { data: facts, isLoading, error } = useQuery('facts', fetchFacts, {
      

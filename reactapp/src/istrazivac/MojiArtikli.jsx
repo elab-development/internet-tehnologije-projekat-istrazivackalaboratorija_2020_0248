@@ -3,27 +3,32 @@ import axios from 'axios';
 import './MojiArtikli.css';
 
 const MojiArtikli = () => {
-    const [articles, setArticles] = useState([]);
-    const [editingArticle, setEditingArticle] = useState(null);
-    const [editedData, setEditedData] = useState({});
-  
-    useEffect(() => {
-      const fetchArticles = async () => {
-        try {
-          const token = sessionStorage.getItem('token');
-          const response = await axios.get('http://127.0.0.1:8000/api/mojiArtikli', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setArticles(response.data);
-        } catch (error) {
-          console.error('Error fetching articles:', error);
-        }
-      };
-  
-      fetchArticles();
-    }, []);
+  const [articles, setArticles] = useState([]);
+  const [editingArticle, setEditingArticle] = useState(null);
+  const [editedData, setEditedData] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const token = sessionStorage.getItem('token');
+        const response = await axios.get('http://127.0.0.1:8000/api/mojiArtikli', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setArticles(response.data);
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
 
   const handleOpenArticle = async (id, filename) => {
     try {
@@ -110,9 +115,20 @@ const MojiArtikli = () => {
     setEditingArticle(null);
     setEditedData({});
   };
+
+  const filteredArticles = articles.filter(article => 
+    article.title.toLowerCase().includes(searchQuery)
+  );
+
   return (
     <div className='moji-artikli'>
       <h2>Moji Artikli</h2>
+      <input
+        type="text"
+        placeholder="Pretraži po naslovu..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
       <table>
         <thead>
           <tr>
@@ -124,7 +140,7 @@ const MojiArtikli = () => {
           </tr>
         </thead>
         <tbody>
-          {articles.map((article) => (
+          {filteredArticles.map((article) => (
             <tr key={article.id}>
               <td>{article.title}</td>
               <td>{article.content}</td>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';  
-
+import { useNavigate } from 'react-router-dom';
 const Login = ({setToken}) => { 
+  let navigate=useNavigate();
   const [formData, setFormData] = useState({
     email: 'monty87@example.org',
     password: 'password'
@@ -18,6 +19,7 @@ const Login = ({setToken}) => {
       console.log(response.data); 
       setToken(response.data.token);
       sessionStorage.setItem("token",response.data.token);
+      navigate('/upload')
     } catch (error) {
       console.error('Login error:', error.response.data.message);
       
