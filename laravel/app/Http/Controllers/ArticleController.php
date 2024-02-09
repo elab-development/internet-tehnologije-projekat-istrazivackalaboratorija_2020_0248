@@ -50,51 +50,49 @@ class ArticleController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
-            'content' => 'required', 
-            'abstract' => 'nullable|string', 
-            'keywords' => 'nullable|string', 
-            'file' => 'required|file', 
-            'reference' => 'nullable|array', // Dodajemo validaciju za polje references kao niz
-            'reference.*.title' => 'required|string', // Validacija naslova u svakom objektu u nizu references
-           
+            'content' => 'required',
+            'abstract' => 'nullable|string',
+            'keywords' => 'nullable|string',
+            'file' => 'required|file',
+            'reference' => 'nullable|array',
+            'reference.*.title' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-
+    
         $user = Auth::user();
         $data = $validator->validated();
-       
-        // Postavljamo published_at na trenutni datum i vreme
+    
         $data['published_at'] = Carbon::now();
-
-
-        
- 
-        // Ako je fajl uploadovan, sačuvaj ga u storage i generiši putanju
+    
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $path = $file->store('uploads'); 
+            $path = $file->store('uploads');
             $data['image_path'] = $path;
         }
-
-        $data['user_id'] = $user->id;
-       
-
-                // Čuvamo podatke o referencama iz zahteva
-        if (isset($data['reference'])) {
-            $articleData = Arr::except($data, ['reference']); // Exclude 'reference' from the main article data.
-            $articleData['reference'] = json_encode($data['reference']); // Convert references to JSON string.
-        } else {
-            $articleData = $data;
-        }
-        
-        $article = Article::create($articleData);
-
-        return response()->json($article, 201);
     
+        $data['user_id'] = $user->id;
+    
+        $articleData = Arr::except($data, ['reference']);
+        if (isset($data['reference'])) {
+            $articleData['reference'] = json_encode($data['reference']); // Convert references to JSON string.
+    
+            // Proveri svaku referencu i povećaj brojač citiranja ako je potrebno
+            foreach ($data['reference'] as $reference) {
+                $referencedArticle = Article::where('title', $reference['title'])->first();
+                if ($referencedArticle) {
+                    $referencedArticle->increment('citations_count');
+                }
+            }
+        }
+    
+        $article = Article::create($articleData);
+    
+        return response()->json($article, 201);
     }
+    
 
     public function update(Request $request, $id)
     {
