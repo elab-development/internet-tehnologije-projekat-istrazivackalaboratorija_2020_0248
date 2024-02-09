@@ -9,6 +9,7 @@ import { useState } from 'react';
 import Login from './login/Login';
 import Register from './login/Register';
 import MojiArtikli from './istrazivac/MojiArtikli';
+import StatisticsComponent from './admin/StatisticsComponent';
 function App() {
   const [token,setToken] =useState(null);
   return (
@@ -18,7 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/upload" element={<PublicationUploadForm />} />
-          <Route path="/publications" element={<PublicationsList />} />
+          <Route path="/statistike" element={<StatisticsComponent />} />
 
 
 

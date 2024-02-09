@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -172,7 +173,28 @@ class ArticleController extends Controller
     }
     
   
-
+    public function statistics()
+    {
+        $totalResearchers = User::where('role_id', '=', 2)->count();
+        $totalArticles = Article::count();
+    
+        $authorsWithArticleCount = User::where('role_id', '=', 2)
+            ->withCount('articles')
+            ->get(['id', 'name', 'articles_count']);
+    
+        $articlesWithCitationsCount = Article::with('user')
+            ->select('id', 'title')
+            ->withCount('comments')
+            ->get(['id', 'title', 'comments_count']);
+    
+        return response()->json([
+            'totalResearchers' => $totalResearchers,
+            'totalArticles' => $totalArticles,
+            'authorsWithArticleCount' => $authorsWithArticleCount,
+            'articlesWithCitationsCount' => $articlesWithCitationsCount
+        ]);
+    }
+    
 
 
 

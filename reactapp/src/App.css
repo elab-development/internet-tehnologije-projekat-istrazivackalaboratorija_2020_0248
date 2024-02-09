@@ -274,3 +274,24 @@ nav ul li:hover {
 .sort-button:hover {
   background-color: #3bb2a6; 
 }
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ 
+}
+
+.card {
+  width: 80%;  
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Blaga sjena */
+}
+
+.chart-container {
+  width: 100%; /* Širina kontejnera za grafikon */
+}
