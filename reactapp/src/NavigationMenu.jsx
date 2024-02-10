@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const NavigationMenu = ({ token, setToken }) => {
   let navigate = useNavigate();
 
+  const roleId = sessionStorage.getItem('role_id');
+
   const handleLogout = async () => {
     try {
       await axios.post('http://127.0.0.1:8000/api/logout', {}, {
@@ -26,9 +28,18 @@ const NavigationMenu = ({ token, setToken }) => {
         <li onClick={() => navigate('/')}>Home</li>
         {token ? (
           <>
-            <li onClick={() => navigate('/upload')}>Upload Publication</li>
-            <li onClick={() => navigate('/publications')}>Publications List</li>
-            <li onClick={() => navigate('/mojiArtikli')}>Moji artikli</li>
+            {roleId === '1' && (
+              <>
+                <li onClick={() => navigate('/upload')}>Upload Publication</li>
+                <li onClick={() => navigate('/mojiArtikli')}>Moji artikli</li>
+              </>
+            )}
+            {roleId === '2' && (
+              <>
+                <li onClick={() => navigate('/admin/publications')}>Publications List</li>
+                <li onClick={() => navigate('/statistike')}>Statistike</li>
+              </>
+            )}
             <li onClick={handleLogout}>Logout</li>
           </>
         ) : (

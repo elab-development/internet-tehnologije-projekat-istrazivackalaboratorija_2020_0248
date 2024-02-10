@@ -2,6 +2,7 @@
  
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Models\User;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ class ArticleController extends Controller
     public function index() //vraca sve moguce artikle,, npr za admin page
     {
         $articles = Article::all();   
-        return response()->json($articles);
+        return  ArticleResource::collection($articles);
     }
     public function mojiArtikli() //vraca artikle ulogovanog usera, npr za stranicu za CRUD operacije
     {
@@ -63,7 +64,7 @@ class ArticleController extends Controller
             return response()->json($validator->errors(), 400);
         }
     
-        $user = Auth::user();
+       
         $data = $validator->validated();
     
         $data['published_at'] = Carbon::now();
@@ -73,7 +74,7 @@ class ArticleController extends Controller
             $path = $file->store('uploads');
             $data['image_path'] = $path;
         }
-    
+        $user = Auth::user();
         $data['user_id'] = $user->id;
     
         $articleData = Arr::except($data, ['reference']);

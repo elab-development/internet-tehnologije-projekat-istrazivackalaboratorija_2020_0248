@@ -19,7 +19,13 @@ const Login = ({setToken}) => {
       console.log(response.data); 
       setToken(response.data.token);
       sessionStorage.setItem("token",response.data.token);
-      navigate('/upload')
+      sessionStorage.setItem("role_id",response.data.user.role_id);
+      if(response.data.user.role_id==1){
+          navigate('/upload')
+      }else{
+        navigate('/admin/publications')
+      }
+     
     } catch (error) {
       console.error('Login error:', error.response.data.message);
       

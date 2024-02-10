@@ -19,12 +19,16 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/upload" element={<PublicationUploadForm />} />
+
+          
           <Route path="/statistike" element={<StatisticsComponent />} />
           <Route path="/admin/publications" element={<PublicationsList />} />
 
 
 
           <Route path="/mojiArtikli" element={<MojiArtikli />} />
+
+
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login  setToken={setToken}/>} />
 

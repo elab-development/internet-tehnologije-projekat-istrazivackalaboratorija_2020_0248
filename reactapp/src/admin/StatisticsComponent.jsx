@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
-import { Chart } from 'chart.js/auto'; // Dodajte ovu liniju
+import { Chart } from 'chart.js/auto'; 
 
 const StatisticsComponent = () => {
   const [statistics, setStatistics] = useState(null);

@@ -16,7 +16,7 @@ const PublicationsList = () => {
             Authorization: `Bearer ${token}`,  
           },
         });
-        setPublications(response.data);
+        setPublications(response.data.data);
       } catch (error) {
         console.error('Error fetching publications:', error);
       }
